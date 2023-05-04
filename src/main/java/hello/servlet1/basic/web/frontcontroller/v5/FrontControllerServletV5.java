@@ -2,11 +2,12 @@ package hello.servlet1.basic.web.frontcontroller.v5;
 
 import hello.servlet1.basic.web.frontcontroller.ModelView;
 import hello.servlet1.basic.web.frontcontroller.MyView;
-import hello.servlet1.basic.web.frontcontroller.v3.ControllerV3;
 import hello.servlet1.basic.web.frontcontroller.v3.controller.MemberListControllerV3;
 import hello.servlet1.basic.web.frontcontroller.v3.controller.MemberSaveControllerV3;
-import hello.servlet1.basic.web.frontcontroller.v4.ControllerV4;
+import hello.servlet1.basic.web.frontcontroller.v4.controller.MemberListControllerV4;
+import hello.servlet1.basic.web.frontcontroller.v4.controller.MemberSaveControllerV4;
 import hello.servlet1.basic.web.frontcontroller.v5.adapter.ControllerV3HandlerAdapter;
+import hello.servlet1.basic.web.frontcontroller.v5.adapter.ControllerV4HandlerAdapter;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -32,12 +33,17 @@ public class FrontControllerServletV5 extends HttpServlet {
 
     private void initHandlerAdapters() {
         handlerAdapters.add(new ControllerV3HandlerAdapter());
+        handlerAdapters.add(new ControllerV4HandlerAdapter());
     }
 
     private void initHandlerMappingMap() {
         handlerMappingMap.put("/front-controller/v3/members/new-form", new MemberSaveControllerV3());
         handlerMappingMap.put("/front-controller/v3/members/save", new MemberSaveControllerV3());
         handlerMappingMap.put("/front-controller/v3/members", new MemberListControllerV3());
+
+        handlerMappingMap.put("/front-controller/v4/members/new-form", new MemberSaveControllerV4());
+        handlerMappingMap.put("/front-controller/v4/members/save", new MemberSaveControllerV4());
+        handlerMappingMap.put("/front-controller/v4/members", new MemberListControllerV4());
     }
 
     @Override
@@ -78,11 +84,5 @@ public class FrontControllerServletV5 extends HttpServlet {
         return new MyView("WEB-INF/views/" + viewName + ".jsp");
     }
 
-    private static Map<String, String> createParamMap(HttpServletRequest req) {
-        Map<String, String> paramMap = new HashMap<>();
-        req.getParameterNames().asIterator()
-                .forEachRemaining(paramName -> paramMap.put(paramName, req.getParameter(paramName)));
 
-        return paramMap;
-    }
 }
